@@ -1,0 +1,39 @@
+module redborder-manager 1.0;
+
+require {
+    type init_t;
+    type http_cache_port_t;
+    type httpd_sys_content_t;
+    type httpd_tmp_t;
+    type lib_t;
+    type postgresql_port_t;
+    type ssh_exec_t;
+    type sudo_exec_t;
+    type zookeeper_client_port_t;
+    type memcache_port_t;
+    type useradd_t;
+    type var_lib_t;
+    class tcp_socket name_connect;
+    class file { append create execute execute_no_trans ioctl open read setattr unlink write };
+    class dir rmdir;
+    class process execmem;
+}
+
+#============= init_t ==============
+allow init_t http_cache_port_t:tcp_socket name_connect;
+
+allow init_t httpd_sys_content_t:file { append create execute execute_no_trans ioctl open read setattr unlink write };
+allow init_t httpd_tmp_t:dir rmdir;
+
+allow init_t lib_t:file write;
+allow init_t postgresql_port_t:tcp_socket name_connect;
+allow init_t init_t:process execmem;
+allow init_t ssh_exec_t:file { execute execute_no_trans open read };
+
+allow init_t sudo_exec_t:file execute;
+allow init_t zookeeper_client_port_t:tcp_socket name_connect;
+
+allow init_t memcache_port_t:tcp_socket name_connect;
+
+#============= useradd_t ==============
+allow useradd_t var_lib_t:file { create open setattr write };
