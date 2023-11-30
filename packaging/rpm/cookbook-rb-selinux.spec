@@ -43,7 +43,8 @@ case "$1" in
   2)
     # This is an upgrade.
     su - -s /bin/bash -c 'source /etc/profile && rvm gemset use default && env knife cookbook upload rb-selinux'
-    if [ semodule -l | grep redborder-manager ]; then
+    semodule -l | grep redborder-manager &>/dev/null
+    if [ $? -eq 0 ]; then
       semodule -r redborder-manager
     fi
     getenforce | grep Disabled &>/dev/null
