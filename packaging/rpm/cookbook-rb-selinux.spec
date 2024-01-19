@@ -64,5 +64,7 @@ esac
 %doc
 
 %changelog
+* Fri Mon 19 2024 David Vanhoucke <dvanhoucke@redborder.com> - 0.0.2-1
+- Fix druid coordinator
 * Mon Nov 27 2023 David Vanhoucke <dvanhoucke@redborder.com> - 0.0.1-1
 - first spec version
