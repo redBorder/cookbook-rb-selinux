@@ -2,6 +2,7 @@ module redborder-manager 1.0;
 
 require {
     type init_t;
+    type admin_home_t;
     type http_cache_port_t;
     type httpd_sys_content_t;
     type httpd_tmp_t;
@@ -21,10 +22,13 @@ require {
 }
 
 #============= init_t ==============
+allow init_t admin_home_t:file read;
+
 allow init_t http_cache_port_t:tcp_socket name_connect;
 
 allow init_t httpd_sys_content_t:file { append create execute execute_no_trans ioctl open read setattr unlink write };
 allow init_t httpd_tmp_t:dir rmdir;
+allow init_t httpd_sys_content_t:dir rmdir;
 
 allow init_t transproxy_port_t:tcp_socket name_connect;
 
