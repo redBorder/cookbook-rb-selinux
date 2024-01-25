@@ -16,17 +16,18 @@ require {
     type var_lib_t;
     type transproxy_port_t;
     class tcp_socket name_connect;
-    class file { append create execute execute_no_trans ioctl open read setattr unlink write };
+    class file { append create execute execute_no_trans ioctl open read setattr link unlink write rename };
+
     class dir rmdir;
     class process execmem;
 }
 
 #============= init_t ==============
-allow init_t admin_home_t:file read;
+allow init_t admin_home_t:file {read open};
 
 allow init_t http_cache_port_t:tcp_socket name_connect;
 
-allow init_t httpd_sys_content_t:file { append create execute execute_no_trans ioctl open read setattr unlink write };
+allow init_t httpd_sys_content_t:file { append create execute execute_no_trans ioctl open read setattr unlink write link rename };
 allow init_t httpd_tmp_t:dir rmdir;
 allow init_t httpd_sys_content_t:dir rmdir;
 
