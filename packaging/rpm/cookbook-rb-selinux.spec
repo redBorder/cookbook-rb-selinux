@@ -47,7 +47,7 @@ esac
 %doc
 
 %changelog
-* Thu Feb 01 2024 David Vanhoucke <dvanhoucke@redborder.com> - 0.0.3-1
+* Thu Feb 01 2024 David Vanhoucke <dvanhoucke@redborder.com> - 0.1.0-1
 - remove the selinux modules and move to redborder-selinux
 * Fri Jan 19 2024 David Vanhoucke <dvanhoucke@redborder.com> - 0.0.2-1
 - Fix druid coordinator
