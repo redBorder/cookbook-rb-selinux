@@ -3,6 +3,11 @@ cookbook-selix CHANGELOG
 
 This file is used to list changes made in each version of the ntp cookbook.
 
+0.1.0
+-----
+- [David Vanhoucke dvanhoucke@redborder.com]
+  - COMMIT_REF Adapt spec file to move modules to redborder-selinux
+
 0.0.1
 -----
 - [jjptapia]
