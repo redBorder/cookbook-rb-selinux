@@ -53,6 +53,8 @@ jobs:
           popd
 
       - name: Run Test Kitchen
+        env:
+          KITCHEN_YAML: ./kitchen.yml
         run: |
           sudo apt-get install -y libvirt-dev libvirt-daemon-system libvirt-clients
           pushd ./resources
