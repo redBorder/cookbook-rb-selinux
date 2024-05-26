@@ -15,6 +15,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "manegron",
+      "name": "Miguel Negrón",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45871721?v=4",
+      "profile": "https://github.com/manegron",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
