@@ -3,6 +3,11 @@ cookbook-rb-selinux CHANGELOG
 
 This file is used to list changes made in each version of the redborder selinux cookbook.
 
+0.1.1
+-----
+- [manegron]
+  - Update metadata
+
 0.0.1
 -----
 - [dvanhoucke]
