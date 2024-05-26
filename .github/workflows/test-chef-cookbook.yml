@@ -25,7 +25,7 @@ jobs:
           chef --version
 
       - name: Accept ChefDK License
-        run: chef exec chef-client --chef-license accept
+        run: chef exec chef-run --chef-license accept
 
       - name: Install dependencies
         run: |
