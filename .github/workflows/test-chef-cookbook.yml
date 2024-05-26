@@ -1,0 +1,48 @@
+name: Test Chef Cookbook
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+
+      - name: Install ChefDK
+        run: |
+          curl -L https://omnitruck.chef.io/install.sh | sudo bash -s -- -P chefdk
+          chef --version
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git
+          sudo apt-get install -y build-essential
+          chef exec bundle install --without development
+
+      - name: Run Foodcritic
+        run: chef exec foodcritic .
+
+      - name: Run Cookstyle
+        run: chef exec cookstyle .
+
+      - name: Run Chefspec
+        run: chef exec rspec
+
+      - name: Run Test Kitchen
+        run: |
+          sudo apt-get install -y libvirt-dev libvirt-daemon-system libvirt-clients
+          chef exec kitchen test
