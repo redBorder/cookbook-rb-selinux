@@ -35,15 +35,26 @@ jobs:
           chef exec bundle install --without development
 
       - name: Run Foodcritic
-        run: chef exec foodcritic ./resources
+        run: |
+          popd ./resources
+          chef exec foodcritic
+          pushd
 
       - name: Run Cookstyle
-        run: chef exec cookstyle ./resources
+        run: |
+          popd ./resources
+          chef exec cookstyle
+          pushd
 
       - name: Run Chefspec
-        run: chef exec rspec ./resources
+        run: |
+          popd ./resources
+          chef exec rspec
+          pushd
 
       - name: Run Test Kitchen
         run: |
           sudo apt-get install -y libvirt-dev libvirt-daemon-system libvirt-clients
-          chef exec kitchen test ./resources
+          popd ./resources
+          chef exec kitchen test
+          pushd
