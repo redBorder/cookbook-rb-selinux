@@ -51,6 +51,7 @@ jobs:
           docker exec builder bash -c "rm -rf /etc/mock/default.cfg"
 
       - name: Setup SDK
+        if: success()
         run: |
           docker exec builder bash -c "curl https://raw.githubusercontent.com/redBorder/repoinit/master/sdk9.cfg > /build/sdk9.cfg"
           docker exec builder bash -c "echo \"config_opts['use_host_resolv'] = True\" >> /build/sdk9.cfg"
