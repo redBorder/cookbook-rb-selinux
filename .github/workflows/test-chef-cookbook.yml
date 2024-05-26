@@ -24,15 +24,12 @@ jobs:
           curl -L https://omnitruck.chef.io/install.sh | sudo bash -s -- -P chefdk
           chef --version
 
-      - name: Accept ChefDK License
-        run: chef exec chef -v --chef-license accept
-
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y git
           sudo apt-get install -y build-essential
-          chef exec bundle install --without development
+          chef --chef-license accept exec bundle install --without development
 
       - name: Run Foodcritic
         run: chef exec foodcritic .
