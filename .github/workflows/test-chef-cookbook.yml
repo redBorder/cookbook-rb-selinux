@@ -1,12 +1,10 @@
 name: Test Chef Cookbook
 
 on:
+  pull_request:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - '**'
 
 jobs:
   test:
