@@ -37,13 +37,13 @@ jobs:
       - name: Run Foodcritic
         run: |
           pushd ./resources
-          chef exec foodcritic
+          chef exec foodcritic .
           popd
 
       - name: Run Cookstyle
         run: |
           pushd ./resources
-          chef exec cookstyle
+          chef exec cookstyle .
           popd
 
       - name: Run Chefspec
