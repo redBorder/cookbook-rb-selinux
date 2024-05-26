@@ -1,0 +1,44 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "davidredborder",
+      "name": "dAvId VHK",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34706472?v=4",
+      "profile": "https://redborder.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "manegron",
+      "name": "Miguel Negrón",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45871721?v=4",
+      "profile": "https://github.com/manegron",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "malvads",
+      "name": "Miguel Álvarez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/128592227?v=4",
+      "profile": "https://github.com/malvads",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "cookbook-rb-selinux",
+  "projectOwner": "redBorder"
+}
