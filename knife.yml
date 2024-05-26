@@ -9,8 +9,7 @@ verifier:
   name: inspec
 
 platforms:
-  - name: ubuntu-20.04
-  - name: centos-8
+  - name: rocky-9
 
 suites:
   - name: default
