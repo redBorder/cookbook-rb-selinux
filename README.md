@@ -8,7 +8,7 @@ cookbook to install and configure redborder selinux
 
 ### Chef
 
-- Chef 12.0 or later
+- Chef 15.7.0 or later
 
 ## Contributing
 
