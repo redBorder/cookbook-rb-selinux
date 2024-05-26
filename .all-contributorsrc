@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "davidredborder",
+      "name": "dAvId VHK",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34706472?v=4",
+      "profile": "https://redborder.com",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "cookbook-rb-selinux",
+  "projectOwner": "redBorder"
+}
