@@ -24,6 +24,9 @@ jobs:
           curl -L https://omnitruck.chef.io/install.sh | sudo bash -s -- -P chefdk
           chef --version
 
+      - name: Accept ChefDK License
+        run: sudo chef-client --chef-license accept
+
       - name: Install dependencies
         run: |
           sudo apt-get update
