@@ -36,25 +36,17 @@ jobs:
 
       - name: Run Foodcritic
         run: |
-          pushd ./resources
-          chef exec foodcritic .
-          popd
+          chef exec foodcritic ./resources
 
       - name: Run Cookstyle
         run: |
-          pushd ./resources
-          chef exec cookstyle .
-          popd
+          chef exec cookstyle ./resources
 
       - name: Run Chefspec
         run: |
-          pushd ./resources
-          chef exec rspec
-          popd
+          chef exec rspec ./resources
 
       - name: Run Test Kitchen
         run: |
           sudo apt-get install -y libvirt-dev libvirt-daemon-system libvirt-clients
-          pushd ./resources
-          chef exec kitchen test
-          popd
+          chef exec kitchen test ./resources
