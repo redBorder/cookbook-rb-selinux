@@ -29,7 +29,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y git
           sudo apt-get install -y build-essential
-          chef --chef-license accept exec bundle install --without development
+          chef exec bundle install --without development
 
       - name: Run Foodcritic
         run: chef exec foodcritic .
