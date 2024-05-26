@@ -1,7 +1,7 @@
 name: RPM Build and Upload
 
 on:
-  push:
+  pull_request:
     branches:
       - 'master'
       - 'main'
@@ -24,15 +24,19 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const prAuthor = context.payload.pull_request.user.login;
-            const labels = context.payload.pull_request.labels.map(label => label.name);
-            
-            if (prAuthor === 'allcontributors') {
-              core.setFailed(`PR created by allcontributors, skipping workflow.`);
-            }
+            if (context.payload.pull_request) {
+              const prAuthor = context.payload.pull_request.user.login;
+              const labels = context.payload.pull_request.labels.map(label => label.name);
+              
+              if (prAuthor === 'allcontributors') {
+                core.setFailed(`PR created by allcontributors, skipping workflow.`);
+              }
 
-            if (labels.includes('no-release')) {
-              core.setFailed(`PR has 'no-release' label, skipping workflow.`);
+              if (labels.includes('no-release')) {
+                core.setFailed(`PR has 'no-release' label, skipping workflow.`);
+              }
+            } else {
+              core.setFailed('This workflow should only run for pull requests.');
             }
             
       - name: Create tag based on metadata.rb
