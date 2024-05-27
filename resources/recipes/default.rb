@@ -1,12 +1,8 @@
-#
-# Cookbook Name:: rb-selinux
+# Cookbook:: rb-selinux
 # Recipe:: default
-#
-# Copyright 2016, redborder
-#
-# All rights reserved - Do Not Redistribute
-#
+# Copyright:: 2024, redborder
+# License:: Affero General Public License, Version 3
 
-rb_selinux_config "config" do
+rb_selinux_config 'config' do
   action :add
 end

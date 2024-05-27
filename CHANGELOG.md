@@ -1,5 +1,10 @@
-cookbook-selix CHANGELOG
-==========================
+cookbook-rb-selinux CHANGELOG
+===============
+
+## 0.1.2
+
+  - Miguel Negrón
+    - [9a90a02] Improvement/fix cookbook lint (#24)
 
 This file is used to list changes made in each version of the ntp cookbook.
 
