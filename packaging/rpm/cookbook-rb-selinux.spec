@@ -25,6 +25,9 @@ chmod -R 0755 %{buildroot}%{cookbook_path}
 install -D -m 0644 README.md %{buildroot}%{cookbook_path}/README.md
 
 %pre
+if [ -d /var/chef/cookbooks/rb-selinux ]; then
+    rm -rf /var/chef/cookbooks/rb-selinux
+fi
 
 %post
 case "$1" in
@@ -38,6 +41,12 @@ case "$1" in
   ;;
 esac
 
+%postun
+# Deletes directory when uninstall the package
+if [ "$1" = 0 ] && [ -d /var/chef/cookbooks/rb-selinux ]; then
+  rm -rf /var/chef/cookbooks/rb-selinux
+fi
+
 %files
 %defattr(0755,root,root)
 %{cookbook_path}
@@ -47,9 +56,14 @@ esac
 %doc
 
 %changelog
-* Thu Feb 01 2024 David Vanhoucke <dvanhoucke@redborder.com> - 0.1.0-1
+* Thu Oct 10 2024 Miguel Negrón <manegron@redborder.com>
+- Add pre and postun
+
+* Thu Feb 01 2024 David Vanhoucke <dvanhoucke@redborder.com>
 - remove the selinux modules and move to redborder-selinux
-* Fri Jan 19 2024 David Vanhoucke <dvanhoucke@redborder.com> - 0.0.2-1
+
+* Fri Jan 19 2024 David Vanhoucke <dvanhoucke@redborder.com>
 - Fix druid coordinator
-* Mon Nov 27 2023 David Vanhoucke <dvanhoucke@redborder.com> - 0.0.1-1
+
+* Mon Nov 27 2023 David Vanhoucke <dvanhoucke@redborder.com>
 - first spec version
