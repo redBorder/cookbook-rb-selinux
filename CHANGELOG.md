@@ -1,6 +1,16 @@
 cookbook-rb-selinux CHANGELOG
 ===============
 
+## 0.1.3
+
+  - Miguel Negrón
+    - [eafcd38] Add pre and postun to clean the cookbook
+    - [049a8cb] Update README.md
+    - [7ae949d] Update rpm.yml
+  - Miguel Negrón
+    - [049a8cb] Update README.md
+    - [7ae949d] Update rpm.yml
+
 ## 0.1.2
 
   - Miguel Negrón
