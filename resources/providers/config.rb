@@ -11,7 +11,8 @@ action :add do
 
     manager_module = shell_out('rpm -qa | grep redborder-manager').stdout.chomp.empty? ? '' : 'redborder-manager'
     ips_module = shell_out('rpm -qa | grep redborder-ips').stdout.chomp.empty? ? '' : 'redborder-ips'
-
+    intrusion_module = shell_out('rpm -qa | grep redborder-intrusion').stdout.chomp.empty? ? '' : 'redborder-intrusion'
+    
     # manager
     execute "semodule -i /etc/selinux/#{manager_module}.pp" do
       only_if { !manager_module.empty? && ::File.exist?("/etc/selinux/#{manager_module}.pp") }
@@ -30,6 +31,13 @@ action :add do
     # ips
     execute "semodule -i /etc/selinux/#{ips_module}.pp" do
       only_if { !ips_module.empty? && ::File.exist?("/etc/selinux/#{ips_module}.pp") }
+      not_if 'getenforce | grep Disabled'
+      not_if "semodule -l | grep '^#{ips_module}\\s'"
+    end
+
+    # intrusion
+    execute "semodule -i /etc/selinux/#{intrusion_module}.pp" do
+      only_if { !intrusion_module.empty? && ::File.exist?("/etc/selinux/#{intrusion_module}.pp") }
       not_if 'getenforce | grep Disabled'
       not_if "semodule -l | grep '^#{ips_module}\\s'"
     end
