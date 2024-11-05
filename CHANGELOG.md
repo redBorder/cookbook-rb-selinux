@@ -3,9 +3,6 @@ cookbook-rb-selinux CHANGELOG
 
 ## 0.1.4
 
-  - nilsver
-    - [2d3f0e7] Merge pull request #27 from redBorder/bug/#19028_add_proxy
-    - [bfca7bb] remove whitespace
   - David Vanhoucke
     - [0f4a6a3] add proxy selinux
 
