@@ -50,7 +50,7 @@ action :add do
       not_if 'getenforce | grep Disabled'
       not_if "semodule -l | grep '^#{proxy_module}\\s'"
     end
-    
+
     Chef::Log.info('rb-selinux cookbook has been processed')
   rescue => e
     Chef::Log.error(e.message)
