@@ -11,6 +11,7 @@ action :add do
 
     manager_module = shell_out('rpm -qa | grep redborder-manager').stdout.chomp.empty? ? '' : 'redborder-manager'
     ips_module = shell_out('rpm -qa | grep redborder-ips').stdout.chomp.empty? ? '' : 'redborder-ips'
+    proxy_module = shell_out('rpm -qa | grep redborder-proxy').stdout.chomp.empty? ? '' : 'redborder-proxy'
 
     # manager
     execute "semodule -i /etc/selinux/#{manager_module}.pp" do
@@ -43,6 +44,13 @@ action :add do
       end
     end
 
+    # proxy
+    execute "semodule -i /etc/selinux/#{proxy_module}.pp" do
+      only_if { !proxy_module.empty? && ::File.exist?("/etc/selinux/#{proxy_module}.pp") }
+      not_if 'getenforce | grep Disabled'
+      not_if "semodule -l | grep '^#{proxy_module}\\s'"
+    end
+
     Chef::Log.info('rb-selinux cookbook has been processed')
   rescue => e
     Chef::Log.error(e.message)
@@ -54,6 +62,7 @@ action :remove do
 
     manager_module = shell_out('rpm -qa | grep redborder-manager').stdout.chomp.empty? ? 'redborder-manager' : ''
     ips_module = shell_out('rpm -qa | grep redborder-ips').stdout.chomp.empty? ? 'redborder-ips' : ''
+    proxy_module = shell_out('rpm -qa | grep redborder-proxy').stdout.chomp.empty? ? 'redborder-proxy' : ''
 
     # manager
     execute "semodule -r #{manager_module}" do
@@ -75,6 +84,13 @@ action :remove do
       not_if { ips_module.empty? }
       only_if 'getenforce | grep Disabled'
       only_if "semodule -l | grep '^#{ips_module}\\s'"
+    end
+
+    # proxy
+    execute "semodule -r #{proxy_module}" do
+      not_if { proxy_module.empty? }
+      only_if 'getenforce | grep Disabled'
+      only_if "semodule -l | grep '^#{proxy_module}\\s'"
     end
 
     Chef::Log.info('rb-selinux cookbook has been processed')
