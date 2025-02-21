@@ -1,6 +1,11 @@
 cookbook-rb-selinux CHANGELOG
 ===============
 
+## 0.1.4
+
+  - David Vanhoucke
+    - [0f4a6a3] add proxy selinux
+
 ## 0.1.3
 
   - Miguel Negrón
