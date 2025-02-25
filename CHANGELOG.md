@@ -1,6 +1,11 @@
 cookbook-rb-selinux CHANGELOG
 ===============
 
+## 0.2.0
+
+  - Miguel Alvarez
+    - [bc0f01e] add intrusion module
+
 ## 0.1.4
 
   - David Vanhoucke
