@@ -43,12 +43,12 @@ action :add do
       not_if "semodule -l | grep '^#{ips_module}\\s'"
     end
 
-    # TODO: restrict more the service snort
+    # TODO: restrict more the service snort (ips & intrusion)
     %w(snort_t).each do |service|
       execute "semanage permissive -a #{service}" do
-        not_if { ips_module.empty? }
+        not_if { ips_module.empty? || intrusion_module.empty? }
         not_if 'getenforce | grep Disabled'
-        not_if "semanage permissive -l | grep 'snort_t'"
+        not_if "semanage permissive -l | grep '#{service}'"
       end
     end
 
