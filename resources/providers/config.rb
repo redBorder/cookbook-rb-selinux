@@ -6,7 +6,6 @@ action :add do
 
     dnf_package 'redborder-selinux' do
       action :upgrade
-      flush_cache[:before]
     end
 
     manager_module = shell_out('rpm -qa | grep redborder-manager').stdout.chomp.empty? ? '' : 'redborder-manager'
