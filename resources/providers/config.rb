@@ -46,7 +46,7 @@ action :add do
     # TODO: restrict more the service snort (ips & intrusion)
     %w(snort_t).each do |service|
       execute "semanage permissive -a #{service}" do
-        not_if { ips_module.empty? || intrusion_module.empty? }
+        not_if { ips_module.empty? && intrusion_module.empty? }
         not_if 'getenforce | grep Disabled'
         not_if "semanage permissive -l | grep '#{service}'"
       end
