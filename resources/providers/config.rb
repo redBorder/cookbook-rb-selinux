@@ -40,7 +40,7 @@ action :add do
     execute "semodule -i /etc/selinux/#{intrusion_module}.pp" do
       only_if { !intrusion_module.empty? && ::File.exist?("/etc/selinux/#{intrusion_module}.pp") }
       not_if 'getenforce | grep Disabled'
-      not_if "semodule -l | grep '^#{ips_module}\\s'"
+      not_if "semodule -l | grep '^#{intrusion_module}\\s'"
     end
 
     # TODO: restrict more the service snort (ips & intrusion)
