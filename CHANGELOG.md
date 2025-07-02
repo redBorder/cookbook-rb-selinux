@@ -1,6 +1,12 @@
 cookbook-rb-selinux CHANGELOG
 ===============
 
+## 0.2.2
+
+  - Miguel Alarez
+    - [1d09a23] Update config.rb
+    - [906ff25] Allow snort_t in intrusion and ips
+
 ## 0.2.1
 
   - nilsver

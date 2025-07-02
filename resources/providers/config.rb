@@ -39,15 +39,15 @@ action :add do
     execute "semodule -i /etc/selinux/#{intrusion_module}.pp" do
       only_if { !intrusion_module.empty? && ::File.exist?("/etc/selinux/#{intrusion_module}.pp") }
       not_if 'getenforce | grep Disabled'
-      not_if "semodule -l | grep '^#{ips_module}\\s'"
+      not_if "semodule -l | grep '^#{intrusion_module}\\s'"
     end
 
-    # TODO: restrict more the service snort
+    # TODO: restrict more the service snort (ips & intrusion)
     %w(snort_t).each do |service|
       execute "semanage permissive -a #{service}" do
-        not_if { ips_module.empty? }
+        not_if { ips_module.empty? && intrusion_module.empty? }
         not_if 'getenforce | grep Disabled'
-        not_if "semanage permissive -l | grep 'snort_t'"
+        not_if "semanage permissive -l | grep '#{service}'"
       end
     end
 
@@ -69,6 +69,7 @@ action :remove do
 
     manager_module = shell_out('rpm -qa | grep redborder-manager').stdout.chomp.empty? ? 'redborder-manager' : ''
     ips_module = shell_out('rpm -qa | grep redborder-ips').stdout.chomp.empty? ? 'redborder-ips' : ''
+    intrusion_module = shell_out('rpm -qa | grep redborder-intrusion_module').stdout.chomp.empty? ? 'redborder-intrusion_module' : ''
     proxy_module = shell_out('rpm -qa | grep redborder-proxy').stdout.chomp.empty? ? 'redborder-proxy' : ''
 
     # manager
@@ -98,6 +99,13 @@ action :remove do
       not_if { proxy_module.empty? }
       only_if 'getenforce | grep Disabled'
       only_if "semodule -l | grep '^#{proxy_module}\\s'"
+    end
+
+    # intrusion
+    execute "semodule -r #{intrusion_module}" do
+      not_if { intrusion_module.empty? }
+      only_if 'getenforce | grep Disabled'
+      only_if "semodule -l | grep '^#{intrusion_module}\\s'"
     end
 
     Chef::Log.info('rb-selinux cookbook has been processed')
