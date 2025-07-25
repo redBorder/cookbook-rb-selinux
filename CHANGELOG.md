@@ -1,6 +1,11 @@
 cookbook-rb-selinux CHANGELOG
 ===============
 
+## 0.2.3
+
+  - jnavarrorb
+    - [5a869d9] Remove executable permissions on non-executable files
+
 ## 0.2.2
 
   - Miguel Alarez
