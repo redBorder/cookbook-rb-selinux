@@ -58,7 +58,7 @@ action :add do
       not_if "semodule -l | grep '^#{proxy_module}\\s'"
     end
 
-    execute "generate_and_install_snmp_selinux" do
+    execute 'generate_and_install_snmp_selinux' do
       command "grep 'snmpd_t' /var/log/audit/audit.log | audit2allow -M allow_snmp_connection && semodule -i allow_snmp_connection.pp"
       cwd '/etc/selinux'
       not_if "semodule -l | grep -q '^allow_snmp_connection\\s' || getenforce | grep -q 'Disabled'"
