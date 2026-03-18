@@ -63,6 +63,7 @@ action :add do
       command "grep 'snmpd_t' /var/log/audit/audit.log | audit2allow -M allow_snmp_connection && semodule -i allow_snmp_connection.pp"
       cwd '/etc/selinux'
       not_if "semodule -l | grep -q '^allow_snmp_connection\\s' || getenforce | grep -q 'Disabled'"
+      only_if { node.recipe?('rb-proxy::configure') }
       only_if "grep -q 'snmpd_t' /var/log/audit/audit.log"
     end
 
