@@ -12,6 +12,7 @@ action :add do
     ips_module = shell_out('rpm -qa | grep redborder-ips').stdout.chomp.empty? ? '' : 'redborder-ips'
     intrusion_module = shell_out('rpm -qa | grep redborder-intrusion').stdout.chomp.empty? ? '' : 'redborder-intrusion'
     proxy_module = shell_out('rpm -qa | grep redborder-proxy').stdout.chomp.empty? ? '' : 'redborder-proxy'
+    snmp_module = shell_out('grep "snmpd_t" /var/log/audit/audit.log | audit2allow -M allow_snmp_connection').stdout.chomp.empty?
 
     # manager
     execute "semodule -i /etc/selinux/#{manager_module}.pp" do
@@ -56,6 +57,13 @@ action :add do
       only_if { !proxy_module.empty? && ::File.exist?("/etc/selinux/#{proxy_module}.pp") }
       not_if 'getenforce | grep Disabled'
       not_if "semodule -l | grep '^#{proxy_module}\\s'"
+    end
+
+    execute "generate_and_install_snmp_selinux" do
+      command "grep 'snmpd_t' /var/log/audit/audit.log | audit2allow -M allow_snmp_connection && semodule -i allow_snmp_connection.pp"
+      cwd '/etc/selinux'
+      not_if "semodule -l | grep -q '^allow_snmp_connection\\s' || getenforce | grep -q 'Disabled'"
+      only_if "grep -q 'snmpd_t' /var/log/audit/audit.log"
     end
 
     Chef::Log.info('rb-selinux cookbook has been processed')
