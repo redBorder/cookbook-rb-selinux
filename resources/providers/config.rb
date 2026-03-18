@@ -12,7 +12,6 @@ action :add do
     ips_module = shell_out('rpm -qa | grep redborder-ips').stdout.chomp.empty? ? '' : 'redborder-ips'
     intrusion_module = shell_out('rpm -qa | grep redborder-intrusion').stdout.chomp.empty? ? '' : 'redborder-intrusion'
     proxy_module = shell_out('rpm -qa | grep redborder-proxy').stdout.chomp.empty? ? '' : 'redborder-proxy'
-    snmp_module = shell_out('grep "snmpd_t" /var/log/audit/audit.log | audit2allow -M allow_snmp_connection').stdout.chomp.empty?
 
     # manager
     execute "semodule -i /etc/selinux/#{manager_module}.pp" do
