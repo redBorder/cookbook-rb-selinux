@@ -58,10 +58,12 @@ action :add do
       not_if "semodule -l | grep '^#{proxy_module}\\s'"
     end
 
-    execute 'setsebool -P nis_enabled 1' do
-      not_if { proxy_module.empty? }
-      not_if 'getenforce | grep Disabled'
-      not_if 'getsebool nis_enabled | grep on$'
+    %w(nis_enabled net_admin_exec_trans).each do |sebool|
+      execute "setsebool -P #{sebool} 1" do
+        not_if { proxy_module.empty? }
+        not_if 'getenforce | grep Disabled'
+        not_if "getsebool #{sebool} | grep on$"
+      end
     end
 
     Chef::Log.info('rb-selinux cookbook has been processed')
