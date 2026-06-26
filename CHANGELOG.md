@@ -1,6 +1,17 @@
 cookbook-rb-selinux CHANGELOG
 ===============
 
+## 0.3.0
+
+  - Miguel Negrón
+    - [0d6f343] Merge pull request #37 from redBorder/feature/#25576_net_tools_for_proxy
+  - manegron
+    - [0d6f343] Merge pull request #37 from redBorder/feature/#25576_net_tools_for_proxy
+    - [7cffb2e] Undo ping change to use policies
+    - [7b99ec4] Enable net_admin_exec_trans para proxy_module
+    - [d70552f] Fix lint
+    - [2e15369] Allow NIS auth for proxy required by net_tools
+
 ## 0.2.3
 
   - jnavarrorb
