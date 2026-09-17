@@ -64,6 +64,43 @@ action :add do
       not_if 'getsebool nis_enabled | grep on$'
     end
 
+    # vsftpd config-backup transfer server (cookbook-vsftpd)
+    if new_resource.ftp_enabled
+      dnf_package 'policycoreutils-python-utils' do
+        action :install
+        not_if 'getenforce | grep Disabled'
+      end
+
+      execute 'label ftp passive port range for selinux' do
+        command "semanage port -a -t ftp_port_t -p tcp #{new_resource.ftp_pasv_min_port}-#{new_resource.ftp_pasv_max_port}"
+        not_if 'getenforce | grep Disabled'
+        not_if "semanage port -l | grep -q '#{new_resource.ftp_pasv_min_port}-#{new_resource.ftp_pasv_max_port}'"
+      end
+
+      execute 'label ftp upload dir for selinux' do
+        command "semanage fcontext -a -t public_content_rw_t '#{new_resource.ftp_upload_dir}/incoming(/.*)?'"
+        not_if 'getenforce | grep Disabled'
+        not_if "semanage fcontext -l | grep -q '#{new_resource.ftp_upload_dir}/incoming(/.*)?'"
+      end
+
+      execute 'apply selinux label to ftp upload dir' do
+        command "restorecon -R '#{new_resource.ftp_upload_dir}/incoming'"
+        not_if 'getenforce | grep Disabled'
+      end
+
+      execute 'allow local ftp users to write to public_content_rw_t' do
+        command 'setsebool -P ftpd_anon_write on'
+        not_if 'getenforce | grep Disabled'
+        not_if "getsebool ftpd_anon_write | grep -q ' on\$'"
+      end
+    else
+      execute 'unlabel ftp passive port range for selinux' do
+        command "semanage port -d -t ftp_port_t -p tcp #{new_resource.ftp_pasv_min_port}-#{new_resource.ftp_pasv_max_port}"
+        not_if 'getenforce | grep Disabled'
+        only_if "semanage port -l | grep -q '#{new_resource.ftp_pasv_min_port}-#{new_resource.ftp_pasv_max_port}'"
+      end
+    end
+
     Chef::Log.info('rb-selinux cookbook has been processed')
   rescue => e
     Chef::Log.error(e.message)
