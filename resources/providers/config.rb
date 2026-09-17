@@ -91,7 +91,7 @@ action :add do
       execute 'allow local ftp users to write to public_content_rw_t' do
         command 'setsebool -P ftpd_anon_write on'
         not_if 'getenforce | grep Disabled'
-        not_if "getsebool ftpd_anon_write | grep -q ' on\$'"
+        not_if "getsebool ftpd_anon_write | grep -q ' on$'"
       end
     else
       execute 'unlabel ftp passive port range for selinux' do
