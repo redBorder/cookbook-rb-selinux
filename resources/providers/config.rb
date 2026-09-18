@@ -119,3 +119,45 @@ action :remove do
     Chef::Log.error(e.message)
   end
 end
+
+# vsftpd config-backup transfer server (cookbook-vsftpd) -- called
+# separately from :add/:remove above, after vsftpd_config has created
+# ftp_upload_dir/incoming, since restorecon needs that path to exist.
+action :add_ftp do
+  dnf_package 'policycoreutils-python-utils' do
+    action :install
+    not_if 'getenforce | grep Disabled'
+  end
+
+  execute 'label ftp passive port range for selinux' do
+    command "semanage port -a -t ftp_port_t -p tcp #{new_resource.ftp_pasv_min_port}-#{new_resource.ftp_pasv_max_port}"
+    not_if 'getenforce | grep Disabled'
+    not_if "semanage port -l | grep -q '#{new_resource.ftp_pasv_min_port}-#{new_resource.ftp_pasv_max_port}'"
+  end
+
+  execute 'label ftp upload dir for selinux' do
+    command "semanage fcontext -a -t public_content_rw_t '#{new_resource.ftp_upload_dir}/incoming(/.*)?'"
+    not_if 'getenforce | grep Disabled'
+    not_if "semanage fcontext -l | grep -q '#{new_resource.ftp_upload_dir}/incoming(/.*)?'"
+  end
+
+  execute 'apply selinux label to ftp upload dir' do
+    command "restorecon -R '#{new_resource.ftp_upload_dir}/incoming'"
+    not_if 'getenforce | grep Disabled'
+    only_if { ::File.directory?("#{new_resource.ftp_upload_dir}/incoming") }
+  end
+
+  execute 'allow local ftp users to write to public_content_rw_t' do
+    command 'setsebool -P ftpd_anon_write on'
+    not_if 'getenforce | grep Disabled'
+    not_if "getsebool ftpd_anon_write | grep -q ' on$'"
+  end
+end
+
+action :remove_ftp do
+  execute 'unlabel ftp passive port range for selinux' do
+    command "semanage port -d -t ftp_port_t -p tcp #{new_resource.ftp_pasv_min_port}-#{new_resource.ftp_pasv_max_port}"
+    not_if 'getenforce | grep Disabled'
+    only_if "semanage port -l | grep -q '#{new_resource.ftp_pasv_min_port}-#{new_resource.ftp_pasv_max_port}'"
+  end
+end
