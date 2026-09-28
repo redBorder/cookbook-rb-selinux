@@ -1,6 +1,15 @@
 cookbook-rb-selinux CHANGELOG
 ===============
 
+## 1.0.0
+
+  - Miguel Negrón
+    - [6034ba2] Merge pull request #39 from redBorder/feature/#26031_implement_snapshot_configuration_rollback
+  - Juan Soto
+    - [809065f] Split vsftpd SELinux labeling into :add_ftp/:remove_ftp actions
+    - [f428d68] Drop stray backslash escape in getsebool grep pattern
+    - [0706429] Add vsftpd SELinux port/fcontext handling, moved from cookbook-vsftpd
+
 ## 0.3.0
 
   - Miguel Negrón
