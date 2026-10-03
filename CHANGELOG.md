@@ -1,6 +1,11 @@
 cookbook-rb-selinux CHANGELOG
 ===============
 
+## 1.0.1
+
+  - manegron
+    - [64102b9] Upload cookbook only if opscode-erchef is active
+
 ## 1.0.0
 
   - Miguel Negrón
