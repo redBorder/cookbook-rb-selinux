@@ -1,6 +1,11 @@
 cookbook-rb-selinux CHANGELOG
 ===============
 
+## 1.0.2
+
+  - José Jiménez
+    - [a78dde3] enable ips/intrusion send traps to the manager
+
 ## 1.0.1
 
   - manegron

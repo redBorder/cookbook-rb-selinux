@@ -42,6 +42,43 @@ action :add do
       not_if "semodule -l | grep '^#{intrusion_module}\\s'"
     end
 
+    # snmptrapd (ips & intrusion) sends the traps to http2k (cloud) or kafka (manager)
+    dnf_package 'checkpolicy' do
+      action :install
+      not_if { ips_module.empty? && intrusion_module.empty? }
+      not_if 'getenforce | grep Disabled'
+    end
+
+    file '/etc/selinux/redborder-snmptrapd.te' do
+      content <<~TE
+        module redborder-snmptrapd 1.0;
+
+        require {
+                type snmpd_t;
+                type http_port_t;
+                type unreserved_port_t;
+                class tcp_socket name_connect;
+        }
+
+        #============= snmpd_t ==============
+        # http2k (cloud mode)
+        allow snmpd_t http_port_t:tcp_socket name_connect;
+        # kafka (manager mode)
+        allow snmpd_t unreserved_port_t:tcp_socket name_connect;
+      TE
+      not_if { ips_module.empty? && intrusion_module.empty? }
+      notifies :run, 'execute[semodule -i /etc/selinux/redborder-snmptrapd.pp]', :immediately
+    end
+
+    execute 'semodule -i /etc/selinux/redborder-snmptrapd.pp' do
+      command 'checkmodule -M -m -o redborder-snmptrapd.mod redborder-snmptrapd.te && ' \
+              'semodule_package -o redborder-snmptrapd.pp -m redborder-snmptrapd.mod && ' \
+              'semodule -i redborder-snmptrapd.pp'
+      cwd '/etc/selinux'
+      not_if 'getenforce | grep Disabled'
+      action :nothing
+    end
+
     # TODO: restrict more the service snort (ips & intrusion)
     %w(snort_t).each do |service|
       execute "semanage permissive -a #{service}" do
